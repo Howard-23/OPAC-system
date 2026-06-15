@@ -349,6 +349,95 @@ const getAuthenticatedSession = (req, requiredPermission) => {
 };
 
 const migrateDatabase = async () => {
+  // Create tables if they do not exist
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblAuthor" (
+      "AuthorCode" INTEGER PRIMARY KEY,
+      "Author" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblSubject" (
+      "SubjectCode" INTEGER PRIMARY KEY,
+      "subject" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblCat" (
+      "controlno" TEXT PRIMARY KEY,
+      "Title" TEXT,
+      "Callno" TEXT,
+      "AuthorCode" INTEGER,
+      "Edition" TEXT,
+      "Pagination" TEXT,
+      "Publisher" TEXT,
+      "Pubplace" TEXT,
+      "Copyright" TEXT,
+      "ISBN" TEXT,
+      "Subject1Code" INTEGER,
+      "Subject2Code" INTEGER,
+      "Subject3Code" INTEGER,
+      "SeriesTitle" TEXT,
+      "AEntryTitle" TEXT,
+      "AEAuthor1Code" INTEGER,
+      "AEAuthor2Code" INTEGER,
+      "AEAuthor3Code" INTEGER,
+      "Material" TEXT,
+      "xNotes" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblHoldings" (
+      "Accession" TEXT PRIMARY KEY,
+      "controlno" TEXT,
+      "Copy" TEXT,
+      "Location" TEXT,
+      "DueDate" TIMESTAMP,
+      "Status" TEXT DEFAULT 'Available'
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblPassword" (
+      "username" TEXT PRIMARY KEY,
+      "passwrd" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblUser" (
+      "Idno" TEXT PRIMARY KEY,
+      "Name" TEXT,
+      "Email" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblRoles" (
+      "RoleID" INTEGER PRIMARY KEY,
+      "RoleName" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblPermissions" (
+      "PermID" INTEGER PRIMARY KEY,
+      "PermName" TEXT
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblRolePermissions" (
+      "RoleID" INTEGER,
+      "PermID" INTEGER,
+      PRIMARY KEY ("RoleID", "PermID")
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "public"."tblUserRoles" (
+      "username" TEXT,
+      "RoleID" INTEGER,
+      "Idno" TEXT,
+      PRIMARY KEY ("username", "RoleID")
+    )
+  `);
+
+  // Add new columns to existing tables
   await pool.query('ALTER TABLE "public"."tblCat" ADD COLUMN IF NOT EXISTS date_added TIMESTAMP DEFAULT NOW()');
   await pool.query('ALTER TABLE "public"."tblHoldings" ADD COLUMN IF NOT EXISTS last_audit TIMESTAMP');
   await pool.query('ALTER TABLE "public"."tblHoldings" ADD COLUMN IF NOT EXISTS date_acquired TIMESTAMP DEFAULT NOW()');
