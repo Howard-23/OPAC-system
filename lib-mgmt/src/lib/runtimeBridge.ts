@@ -13,9 +13,9 @@ const resolveApiBaseUrl = () => {
   }
 
   if (typeof window !== 'undefined') {
-    const { hostname, origin } = window.location;
+    const { hostname } = window.location;
     if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      return `${origin}/api`;
+      return null;
     }
   }
 
@@ -24,8 +24,14 @@ const resolveApiBaseUrl = () => {
 
 const API_BASE_URL = resolveApiBaseUrl();
 const DESKTOP_ONLY_MESSAGE = 'This feature is only available in the desktop app.';
+const MISSING_API_BASE_URL_MESSAGE =
+  'Shared API is not configured. Set VITE_API_BASE_URL in Vercel to your Railway API URL ending in /api, then redeploy.';
 
 const buildUrl = (path: string, query?: Record<string, string | number | undefined | null>) => {
+  if (!API_BASE_URL) {
+    throw new Error(MISSING_API_BASE_URL_MESSAGE);
+  }
+
   const url = new URL(`${API_BASE_URL}${path}`);
 
   if (query) {
@@ -47,7 +53,14 @@ const readJson = async (response: Response) => {
     return null;
   }
 
-  return JSON.parse(text) as unknown;
+  try {
+    return JSON.parse(text) as unknown;
+  } catch (_error) {
+    const contentType = response.headers.get('content-type') || 'unknown content type';
+    throw new Error(
+      `Shared API returned ${contentType} instead of JSON. Check VITE_API_BASE_URL and make sure it points to the Railway API, not the Vercel site.`,
+    );
+  }
 };
 
 const request = async <T>(method: string, path: string, options?: { body?: unknown; query?: Record<string, string | number | undefined | null> }) => {
@@ -63,6 +76,10 @@ const request = async <T>(method: string, path: string, options?: { body?: unkno
       body: options?.body === undefined ? undefined : JSON.stringify(options.body),
     });
   } catch (error) {
+    if (error instanceof Error && error.message === MISSING_API_BASE_URL_MESSAGE) {
+      throw error;
+    }
+
     throw new Error('Shared web API is not reachable. Start `npm run dev:api` from the repo root and try again.');
   }
 
@@ -125,7 +142,7 @@ const SHARED_API_COMMANDS = new Set([
 
 export const isDesktopRuntime = () => hasTauriInvoke();
 export const isWebRuntime = () => !hasTauriInvoke();
-export const getApiBaseUrl = () => API_BASE_URL;
+export const getApiBaseUrl = () => API_BASE_URL || 'Not configured';
 export { Channel };
 
 export const convertFileSrc = (path: string) => (isDesktopRuntime() ? tauriConvertFileSrc(path) : path);

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BeveledBox } from '../../components/common/BeveledBox';
 import { ErrorDialog } from '../../components/auth/ErrorDialog';
 import { useAuth } from '../../hooks/useAuth';
-import { convertFileSrc, invoke, isDesktopRuntime, isWebRuntime } from '../../lib/runtimeBridge';
+import { convertFileSrc, getApiBaseUrl, invoke, isDesktopRuntime, isWebRuntime } from '../../lib/runtimeBridge';
 import { DESKTOP_RUNTIME_MESSAGE, hasTauriInvoke, isTauriShell } from '../../utils/tauriRuntime';
 
 export const LoginPage: React.FC = () => {
@@ -19,6 +19,7 @@ export const LoginPage: React.FC = () => {
   const desktopRuntimeReady = tauriRuntimeAvailable;
   const desktopBridgeStarting = tauriShellDetected && !desktopRuntimeReady;
   const browserDevMode = isWebRuntime();
+  const apiBaseUrl = getApiBaseUrl();
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -204,7 +205,7 @@ export const LoginPage: React.FC = () => {
                 <div className="rounded-sm border border-[#5B84C4] bg-[#EAF4FF] px-3 py-2 text-[11px] font-bold leading-relaxed text-[#123C74] dark:border-[#5B84C4] dark:bg-[#15263C] dark:text-[#BFD9FF]">
                   <div>Browser mode uses the shared web API.</div>
                   <div className="mt-1 font-normal normal-case tracking-normal">
-                    Start the API with <code>npm --prefix server run dev</code>. Desktop-only tools still require <code>npm run tauri:dev</code>.
+                    API: <code>{apiBaseUrl}</code>. On Vercel, set <code>VITE_API_BASE_URL</code> to your Railway API ending in <code>/api</code>.
                   </div>
                 </div>
               )}
