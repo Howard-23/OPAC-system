@@ -1,0 +1,55 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "infoLib",
+  "version": "0.1.0",
+  "identifier": "ph.edu.gendejesus.infolib",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev:tauri",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "infoLib",
+        "width": 400,
+        "height": 500,
+        "resizable": false,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "externalBin": [
+      "bin/ollama",
+      "bin/pg_ctl"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "headerImage": "icons/header.bmp",
+        "sidebarImage": "icons/sidebar.bmp",
+        "installerIcon": "icons/icon.ico",
+        "installMode": "both",
+        "compression": "lzma",
+        "installerHooks": "installer_hooks.nsh"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.railway/
+node_modules/
+server/node_modules/
+lib-mgmt/node_modules/
+lib-mgmt/dist/
+lib-mgmt/src-tauri/target/
+.env
+server/.env
+lib-mgmt/.env
+lib-mgmt/providers/*/.env

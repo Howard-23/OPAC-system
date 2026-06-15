@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm --prefix lib-mgmt ci",
+  "buildCommand": "npm --prefix lib-mgmt run build",
+  "outputDirectory": "lib-mgmt/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

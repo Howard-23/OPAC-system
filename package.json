@@ -1,0 +1,22 @@
+{
+  "name": "library-system-root",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm --prefix server run dev",
+    "dev:web": "npm --prefix lib-mgmt run dev",
+    "dev:desktop": "npm --prefix lib-mgmt run tauri:dev",
+    "api:dev": "npm --prefix server run dev",
+    "start": "npm run start:api",
+    "start:api": "npm --prefix server run start",
+    "dev": "npm --prefix lib-mgmt run dev",
+    "build": "npm --prefix lib-mgmt run build",
+    "typecheck": "npm --prefix lib-mgmt run typecheck",
+    "lint": "npm --prefix lib-mgmt run lint",
+    "tauri:dev": "npm --prefix lib-mgmt exec tauri dev",
+    "tauri:build": "npm --prefix lib-mgmt exec tauri build",
+    "setup": "npm run install:api && npm run install:app",
+    "install:all": "npm run setup",
+    "install:app": "npm --prefix lib-mgmt install",
+    "install:api": "npm --prefix server install"
+  }
+}

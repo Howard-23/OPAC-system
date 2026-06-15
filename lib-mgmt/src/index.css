@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-classic-grey text-black;
+    font-family: 'Inter', 'Roboto', sans-serif;
+  }
+
+  /* Dark Mode Base */
+  .dark body {
+    @apply bg-dark-surface text-dark-text;
+  }
+}
+
+@layer components {
+  /* ========================================
+     LIGHT MODE (unchanged, existing styles)
+     ======================================== */
+
+  /* Classic Beveled Button */
+  .btn-classic {
+    @apply bg-classic-grey px-4 py-1 text-sm active:shadow-bevel-sunken transition-shadow duration-75;
+    box-shadow: 2px 2px 0px #FFFFFF inset, -2px -2px 0px #808080 inset;
+  }
+
+  /* Classic Sunken Input */
+  .input-classic {
+    @apply bg-white px-2 py-1 text-sm border-none focus:outline-none;
+    box-shadow: 1.5px 1.5px 0px #808080 inset, -1.5px -1.5px 0px #FFFFFF inset;
+  }
+
+  /* Window Container */
+  .window-classic {
+    @apply border-classic-grey p-1;
+    box-shadow: 2px 2px 0px #FFFFFF inset, -2px -2px 0px #808080 inset;
+  }
+
+  /* Title Bar (Aero Gradient) */
+  .title-bar {
+    @apply flex items-center justify-between h-7 px-2 text-white font-semibold text-sm;
+    background: linear-gradient(to right, #A6CAF0 0%, #FFFFFF 100%);
+    color: #000040;
+  }
+
+  /* Data Grid Table */
+  .grid-table {
+    @apply w-full bg-white text-sm border-collapse;
+  }
+  
+  .grid-header {
+    @apply bg-classic-header text-left font-normal border;
+    border-color: #808080 #FFFFFF #FFFFFF #808080;
+    padding: 2px 4px;
+  }
+
+  .grid-cell {
+    @apply border-r border-b border-gray-200 px-1 py-0.5 whitespace-nowrap overflow-hidden text-ellipsis;
+  }
+
+  /* Premium Glassmorphism */
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+
+  /* GJC Branded Elements - Reverted to Classic Blue/White */
+  .btn-gjc {
+    @apply bg-classic-blue text-white font-bold px-4 py-1 border-t-2 border-l-2 border-white/30 border-b-2 border-r-2 border-black/40 hover:brightness-110 active:shadow-bevel-sunken transition-all duration-200;
+  }
+
+  .title-bar-gjc {
+    @apply flex items-center justify-between h-8 px-3 text-white font-bold text-sm bg-gradient-to-b from-[#A6CAF0] to-[#7FA8E0] shadow-md;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  /* ========================================
+     DARK MODE — Windows 95/98 Dark Theme
+     ======================================== */
+
+  /* Button: dark grey face with muted bevel */
+  .dark .btn-classic {
+    @apply bg-dark-panel text-dark-text;
+    box-shadow: 2px 2px 0px #5A5A5A inset, -2px -2px 0px #1A1A1A inset;
+  }
+  .dark .btn-classic:active {
+    box-shadow: 2px 2px 0px #1A1A1A inset, -2px -2px 0px #5A5A5A inset;
+  }
+
+  /* Input: deep dark sunken field */
+  .dark .input-classic {
+    @apply bg-dark-input text-dark-text;
+    box-shadow: 1.5px 1.5px 0px #1A1A1A inset, -1.5px -1.5px 0px #5A5A5A inset;
+  }
+  .dark .input-classic::placeholder {
+    color: #707070;
+  }
+  .dark .input-classic:focus {
+    box-shadow: 1.5px 1.5px 0px #1A1A1A inset, -1.5px -1.5px 0px #6B9BD2 inset;
+  }
+
+  /* Window Container */
+  .dark .window-classic {
+    @apply border-dark-surface;
+    box-shadow: 2px 2px 0px #5A5A5A inset, -2px -2px 0px #1A1A1A inset;
+  }
+
+  /* Title Bar: darker navy gradient */
+  .dark .title-bar {
+    background: linear-gradient(to right, #1E3A6E 0%, #2A4F8A 100%);
+    color: #E0E0E0;
+  }
+
+  /* Title Bar GJC variant */
+  .dark .title-bar-gjc {
+    @apply bg-gradient-to-b from-[#1E3A6E] to-[#2A4F8A] text-dark-text;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+
+  /* Data Grid */
+  .dark .grid-table {
+    @apply bg-dark-input text-dark-text;
+  }
+
+  .dark .grid-header {
+    @apply bg-dark-panel text-dark-text font-normal;
+    border-color: #1A1A1A #5A5A5A #5A5A5A #1A1A1A;
+  }
+
+  .dark .grid-cell {
+    @apply border-r-dark-border-dark border-b-dark-border-dark text-dark-text;
+  }
+
+  /* Glassmorphism dark */
+  .dark .glass-panel {
+    @apply bg-dark-surface/70 border-dark-border-light/20;
+  }
+
+  /* GJC Button dark */
+  .dark .btn-gjc {
+    @apply bg-dark-title text-dark-text border-t-2 border-l-2 border-[#5A5A5A]/40 border-b-2 border-r-2 border-[#1A1A1A]/60;
+  }
+  .dark .btn-gjc:hover {
+    filter: brightness(1.2);
+  }
+  .dark .btn-gjc:active {
+    box-shadow: 2px 2px 0px #1A1A1A inset, -2px -2px 0px #5A5A5A inset;
+  }
+
+  /* ========================================
+     DARK MODE — Semantic Overrides
+     ======================================== */
+
+  /* Bevel-raised / sunken in dark context */
+  .dark .shadow-bevel-raised {
+    box-shadow: 2px 2px 0px #5A5A5A inset, -2px -2px 0px #1A1A1A inset !important;
+  }
+  .dark .shadow-bevel-sunken {
+    box-shadow: 2px 2px 0px #1A1A1A inset, -2px -2px 0px #5A5A5A inset !important;
+  }
+
+  /* Selection highlight row in dark grid */
+  .dark tr.bg-blue-100 {
+    @apply bg-dark-selection text-white;
+  }
+
+  /* Scrollbar dark styling (Webkit) */
+  .dark ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  .dark ::-webkit-scrollbar-track {
+    background: #2D2D2D;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #5A5A5A;
+    border: 2px solid #2D2D2D;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #707070;
+  }
+}
